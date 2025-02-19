@@ -19,12 +19,17 @@ pipeline {
         }
         stage('Run Tests with Jacoco') {
             steps {
-                sh 'mvn test'
+                sh 'mvn test verify'
             }
         }
         stage('Generate Coverage'){
             steps {
                 sh 'mvn jacoco:report'
+            }
+        }
+        stage('Archive JaCoCo Report') {
+            steps {
+                archiveArtifacts artifacts: 'target/site/jacoco/index.html', allowEmptyArchive: true
             }
         }
         stage('Archive Artifact') {
